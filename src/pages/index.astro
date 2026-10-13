@@ -3,6 +3,35 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+// Placeholder content: replace with the client's real text and images.
+// Images live in /public, so "/hero.jpg" means public/hero.jpg.
+const hero = {
+	title: 'Welcome to Isla Verde',
+	subtitle: 'A short, inviting line that says what the business does and who it is for.',
+	cta: 'Get in touch',
+	image: '/blog-placeholder-about.jpg',
+};
+
+const services = [
+	{ title: 'Service one', text: 'One or two sentences describing this service and why it matters to customers.' },
+	{ title: 'Service two', text: 'One or two sentences describing this service and why it matters to customers.' },
+	{ title: 'Service three', text: 'One or two sentences describing this service and why it matters to customers.' },
+];
+
+const gallery = ['/blog-placeholder-1.jpg', '/blog-placeholder-2.jpg', '/blog-placeholder-3.jpg'];
+
+const testimonial = {
+	quote: 'A short quote from a happy customer goes here. Real words build trust.',
+	author: 'Customer name',
+};
+
+const contact = {
+	phone: '(787) 555-0100',
+	email: 'hello@example.com',
+	address: 'Street address, Isla Verde, Carolina, PR',
+	hours: 'Mon–Sat, 9am–6pm',
+};
 ---
 
 <!doctype html>
@@ -12,39 +41,206 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	</head>
 	<body>
 		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+		<main class="home">
+			<section class="hero" style={`--hero-image: url(${hero.image})`}>
+				<div class="hero-content">
+					<h1>{hero.title}</h1>
+					<p>{hero.subtitle}</p>
+					<a class="button" href="#contact">{hero.cta}</a>
+				</div>
+			</section>
+
+			<section id="services" class="section">
+				<h2>What we offer</h2>
+				<div class="cards">
+					{
+						services.map((service) => (
+							<article class="card">
+								<h3>{service.title}</h3>
+								<p>{service.text}</p>
+							</article>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="section about">
+				<img src={gallery[0]} alt="" />
+				<div>
+					<h2>About us</h2>
+					<p>
+						A few sentences about the business: its story, what makes it different, and why
+						customers choose it.
+					</p>
+					<a href="/about">Read more →</a>
+				</div>
+			</section>
+
+			<section class="section">
+				<h2>Gallery</h2>
+				<div class="gallery">
+					{gallery.map((src) => <img src={src} alt="" loading="lazy" />)}
+				</div>
+			</section>
+
+			<section class="section testimonial">
+				<blockquote>“{testimonial.quote}”</blockquote>
+				<p class="author">— {testimonial.author}</p>
+			</section>
+
+			<section id="contact" class="section contact">
+				<div>
+					<h2>Contact</h2>
+					<ul class="contact-list">
+						<li><strong>Phone:</strong> <a href={`tel:${contact.phone}`}>{contact.phone}</a></li>
+						<li><strong>Email:</strong> <a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+						<li><strong>Address:</strong> {contact.address}</li>
+						<li><strong>Hours:</strong> {contact.hours}</li>
+					</ul>
+				</div>
+				<!-- Prototype only: this form isn't connected to anything yet. -->
+				<form class="contact-form" onsubmit="event.preventDefault(); alert('Prototype: the form is not connected yet.');">
+					<label>Name <input name="name" required /></label>
+					<label>Email <input name="email" type="email" required /></label>
+					<label>Message <textarea name="message" rows="4" required></textarea></label>
+					<button class="button" type="submit">Send message</button>
+				</form>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	main.home {
+		width: 1100px;
+		padding-top: 1.5em;
+	}
+	.hero {
+		display: flex;
+		align-items: center;
+		min-height: 60vh;
+		padding: 2em;
+		border-radius: 16px;
+		background:
+			linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+			var(--hero-image) center / cover no-repeat;
+		color: white;
+	}
+	.hero-content {
+		max-width: 620px;
+	}
+	.hero h1 {
+		color: white;
+	}
+	.hero p {
+		font-size: 1.2em;
+	}
+	.button {
+		display: inline-block;
+		padding: 0.6em 1.4em;
+		border: none;
+		border-radius: 999px;
+		background: var(--accent);
+		color: white;
+		font: inherit;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	.button:hover {
+		background: var(--accent-dark);
+		color: white;
+	}
+	.section {
+		padding: 3em 0;
+	}
+	.section > h2 {
+		text-align: center;
+		margin-bottom: 1em;
+	}
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5em;
+	}
+	.card {
+		padding: 1.5em;
+		border-radius: 12px;
+		background: white;
+		box-shadow: 0 2px 8px rgba(var(--black), 8%);
+	}
+	.card p {
+		margin: 0;
+	}
+	.about {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2em;
+		align-items: center;
+	}
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1em;
+	}
+	.gallery img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+	}
+	.testimonial {
+		text-align: center;
+		max-width: 720px;
+		margin: auto;
+	}
+	.testimonial blockquote {
+		border: none;
+		padding: 0;
+	}
+	.author {
+		color: rgb(var(--gray));
+	}
+	.contact {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2em;
+	}
+	.contact-list {
+		list-style: none;
+		padding: 0;
+	}
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
+	.contact-form label {
+		display: flex;
+		flex-direction: column;
+	}
+	.contact-form input,
+	.contact-form textarea {
+		padding: 0.5em;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		font-family: inherit;
+		box-sizing: border-box;
+		width: 100%;
+	}
+	.contact-form .button {
+		align-self: flex-start;
+	}
+	@media (max-width: 720px) {
+		.about,
+		.contact {
+			grid-template-columns: 1fr;
+		}
+		.hero {
+			min-height: 50vh;
+			padding: 1.5em;
+		}
+		.hero h1 {
+			font-size: 2.2em;
+		}
+	}
+</style>
