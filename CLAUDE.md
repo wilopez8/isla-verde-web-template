@@ -7,7 +7,9 @@ code on GitHub. The client reviews the live workers.dev URL.
 
 - GitHub: https://github.com/wilopez8/isla-verde-web-template (branch `main`)
 - Local dev: `npm run dev` → http://localhost:4321
-- Deploys happen by pushing to GitHub (Cloudflare Workers Builds). Don't use `npm run deploy`.
+- Live (client) URL: https://isla-verde-web-template.wilopez52.workers.dev
+- Deploys happen by pushing to GitHub (Cloudflare Workers Builds, Worker `isla-verde-web-template`).
+  Don't use `npm run deploy`. Build status shows as a check run on each GitHub commit.
 - Site is in Spanish, 5 pages: `/` (index), `/servicios`, `/proyectos`, `/nosotros`, `/contacto`,
   all using `src/layouts/SiteLayout.astro`. `/about` redirects to `/nosotros` (astro.config.mjs).
 - Page text lives in plain data objects at the top of each page. Shared content: services in
@@ -27,18 +29,17 @@ Update this section at the end of every session: move finished items to "Done", 
 - 2026-10-12: Built home page skeleton: hero, services cards, about, gallery, testimonial, contact info + form. All placeholder content.
 - 2026-11-15: Redesigned in Spanish as a 5-page site ("more contrast" version of the Claude Design
   canvases), using the brand manual colors/fonts, the logo and 14 client photos. Removed starter About page.
+- 2026-11-15: Local project connected to GitHub; Cloudflare Workers Builds deploys `main` to the live URL
+  (verified: commit eb941c3 built and is live). Added the real company story (Patricia) to Nosotros.
 
 ## In progress
-- Connecting the local project to GitHub. The GitHub repo already had a "source repo import" commit
-  (template copy, likely created by Cloudflare's "Deploy to Cloudflare" button), so the first push
-  needs `--force` (see steps given in session 1).
-- Worker name mismatch: `wrangler.json` says `isla-verde`, but the Cloudflare Worker linked to the repo
-  is probably `isla-verde-web-template`. Confirm in the dashboard and make them match before pushing.
+- (nothing)
 
 ## Next up
-- Confirm the Cloudflare Worker exists and is linked to the GitHub repo; get the client's live URL.
-- Fill the `[BRACKETED]` placeholders: contact details + links (contacto.astro), company story and
-  client quote (nosotros.astro), project location. Confirm the service checklists with the client.
+- Fill the `[BRACKETED]` placeholders: contact details + links (contacto.astro), client quote
+  (nosotros.astro). Confirm the service checklists with the client.
+- `wrangler.json` `name` is `isla-verde` but the Cloudflare Worker is `isla-verde-web-template`. Builds
+  work today; consider renaming it in `wrangler.json` to match so the two don't drift.
 - Photos are 200–430 KB each; consider resizing/compressing them before launch.
 - Decide whether the blog is needed; if not, remove `src/pages/blog`, `src/content/blog`, `rss.xml.js`,
   `src/layouts/BlogPost.astro`, `src/components/HeaderLink.astro` and the Atkinson fonts. (Blog is still English.)
