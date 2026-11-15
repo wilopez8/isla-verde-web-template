@@ -4,8 +4,12 @@ import CtaBand from '../components/CtaBand.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 
 // Page content: replace the [BRACKETED] text with the client's real information.
-const historia =
-	'[Cuenta aquí la historia de Isla Verde: quién la fundó, desde cuándo trabajan, dónde y qué los hace diferentes. Dos o tres frases cálidas y sencillas.]';
+// The company story: one item per paragraph, each in quotes and followed by a comma.
+const historia = [
+	'Todo gran jardín comienza con una pequeña semilla. Y la historia de Isla Verde no es la excepción.',
+	'Nuestra fundadora, Patricia, regresó de Estados Unidos en 1989 en un momento difícil, sin trabajo y con la certeza de que necesitaba construir algo propio. Con fe, valentía y muy poco capital, tomó una decisión que cambiaría su vida: vendió lo poco que había traído de vuelta y con solo 6.000 pesos compró sus primeras plantas. Empezó revendiéndolas, multiplicando especies con paciencia y dedicación, hasta que descubrió algo que la apasionaba profundamente: crear jardines y conectar con las personas a través de ellos.',
+	'Así nació Isla Verde – Jardines y Paisajismo, con sede en Chinácota y con presencia en ciudades como Cúcuta, Pamplona, Medellín y Bogotá.',
+];
 
 // Values from the brand manual's "Personalidad" section.
 const valores: { title: string; text: string; icon: IconName; card: string; tile: string }[] = [
@@ -28,15 +32,15 @@ const testimonio = {
 			<div class="intro-text">
 				<span class="eyebrow with-line">Nosotros</span>
 				<h1 class="title-xl">La naturaleza, <span class="highlight">más cerca de ti.</span></h1>
-				<p class="lede intro-lede">Isla Verde nace de una idea sencilla: los espacios con plantas se sienten mejor.</p>
-				<p class="text-on-dark">{historia}</p>
+				<p class="lede intro-lede">Historia de Isla Verde: Jardines que Nacen de la Pasión.</p>
+				{historia.map((parrafo) => <p class="text-on-dark">{parrafo}</p>)}
 			</div>
 			<img
 				class="intro-image"
 				src="/images/proyectos/jardin-frontal-hotel-1.jpeg"
-				alt="Palmas altas contra el cielo junto a una fachada blanca"
-				width="900"
-				height="1600"
+				alt="Jardín en la parte frontal del hotel."
+				width="1600"
+				height="900"
 			/>
 		</div>
 	</section>
