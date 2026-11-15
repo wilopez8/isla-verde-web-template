@@ -1,0 +1,229 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+
+// Contact details: replace the [BRACKETED] values and the links with the real ones.
+const datos: { label: string; value: string; icon: IconName; tile: string; href?: string }[] = [
+	{ label: 'Teléfono', value: '[TELÉFONO]', icon: 'phone', tile: 'tile-sand', href: 'tel:+10000000000' },
+	{ label: 'WhatsApp', value: '[NÚMERO DE WHATSAPP]', icon: 'message', tile: 'tile-leaf', href: 'https://wa.me/10000000000' },
+	{ label: 'Correo', value: '[CORREO]', icon: 'mail', tile: 'tile-white', href: 'mailto:hola@example.com' },
+	{ label: 'Dirección', value: '[DIRECCIÓN]', icon: 'pin', tile: 'tile-lime' },
+	{ label: 'Horario', value: '[HORARIO DE ATENCIÓN]', icon: 'clock', tile: 'tile-forest' },
+];
+
+const tiposDeEspacio = ['Jardín o exterior', 'Interior u oficina', 'Materas y arreglos', 'Otro'];
+---
+
+<SiteLayout title="Contacto">
+	<PageHero
+		eyebrow="Contacto"
+		title="Hablemos de"
+		highlight="tu espacio."
+		lede="Cuéntanos qué tienes en mente y te respondemos para coordinar una visita."
+	/>
+
+	<section class="bg-mint">
+		<div class="container contact">
+			<div class="details">
+				<h2>Datos de contacto</h2>
+				{
+					datos.map((dato) => {
+						const Tag = dato.href ? 'a' : 'div';
+						return (
+							<Tag class="detail" href={dato.href}>
+								<span class={`icon-tile small ${dato.tile}`}>
+									<Icon name={dato.icon} size={22} strokeWidth={1.7} />
+								</span>
+								<span class="detail-text">
+									<span class="detail-label">{dato.label}</span>
+									<span>{dato.value}</span>
+								</span>
+							</Tag>
+						);
+					})
+				}
+			</div>
+
+			<div class="form-card">
+				<!-- Prototype only: the form isn't connected to anything yet. -->
+				<form id="contact-form">
+					<h2>Envíanos un mensaje</h2>
+					<div class="two-cols">
+						<label>Nombre <input name="nombre" type="text" autocomplete="name" required /></label>
+						<label>Teléfono <input name="telefono" type="tel" autocomplete="tel" /></label>
+					</div>
+					<label>Correo electrónico <input name="correo" type="email" autocomplete="email" required /></label>
+					<label>
+						Tipo de espacio
+						<select name="tipo">
+							{tiposDeEspacio.map((tipo) => <option>{tipo}</option>)}
+						</select>
+					</label>
+					<label>Cuéntanos sobre tu espacio <textarea name="mensaje" rows="5"></textarea></label>
+					<button class="btn btn-deep" type="submit">
+						Enviar mensaje <Icon name="arrow" size={18} strokeWidth={2} class="arrow" />
+					</button>
+				</form>
+
+				<div id="form-thanks" class="thanks" role="status" hidden>
+					<span class="icon-tile tile-forest round"><Icon name="check" size={28} strokeWidth={2} /></span>
+					<h2>¡Gracias por escribirnos!</h2>
+					<p>Recibimos tu mensaje. Te responderemos pronto.</p>
+					<p class="note">Nota: este formulario es de prueba y todavía no envía mensajes.</p>
+					<button id="form-reset" class="btn btn-outline-deep" type="button">Enviar otro mensaje</button>
+				</div>
+			</div>
+		</div>
+	</section>
+</SiteLayout>
+
+<script>
+	const form = document.getElementById('contact-form') as HTMLFormElement | null;
+	const thanks = document.getElementById('form-thanks');
+	const reset = document.getElementById('form-reset');
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		form.hidden = true;
+		if (thanks) thanks.hidden = false;
+	});
+	reset?.addEventListener('click', () => {
+		form?.reset();
+		if (form) form.hidden = false;
+		if (thanks) thanks.hidden = true;
+	});
+</script>
+
+<style>
+	.contact {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: 32px;
+		padding-block: 72px 104px;
+	}
+
+	.details {
+		flex: 1 1 340px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		box-sizing: border-box;
+		padding: clamp(24px, 3vw, 36px);
+		border-radius: 20px;
+		background: var(--iv-forest-dark);
+	}
+	.details h2 {
+		margin: 0 0 6px;
+		font-weight: 600;
+		font-size: 22px;
+		color: var(--iv-white);
+	}
+	.detail {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+		padding: 18px;
+		border-radius: 14px;
+		background: var(--iv-forest-deep);
+		color: var(--iv-text-on-dark);
+		text-decoration: none;
+	}
+	a.detail:hover {
+		color: var(--iv-text-on-dark);
+		box-shadow: inset 0 0 0 2px var(--iv-leaf);
+	}
+	.detail-text {
+		display: flex;
+		flex-direction: column;
+	}
+	.detail-label {
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 15px;
+		color: var(--iv-white);
+	}
+
+	.form-card {
+		flex: 1 1 460px;
+		min-width: 0;
+		box-sizing: border-box;
+		padding: clamp(24px, 4vw, 44px);
+		border-radius: 20px;
+		border-top: 6px solid var(--iv-forest);
+		background: var(--iv-white);
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+	form[hidden],
+	.thanks[hidden] {
+		display: none;
+	}
+	.form-card h2 {
+		margin: 0 0 4px;
+		font-weight: 600;
+		font-size: 24px;
+	}
+	.two-cols {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 18px;
+	}
+	label {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 14px;
+		color: var(--iv-forest-deep);
+	}
+	input,
+	select,
+	textarea {
+		box-sizing: border-box;
+		width: 100%;
+		padding: 12px 14px;
+		border: 1.5px solid var(--iv-input-border);
+		border-radius: 8px;
+		background: var(--iv-offwhite);
+		color: var(--iv-text);
+		font: 400 16px var(--font-body);
+	}
+	textarea {
+		resize: vertical;
+	}
+	form .btn {
+		align-self: flex-start;
+		border: none;
+	}
+	form :global(.arrow) {
+		color: var(--iv-sand);
+	}
+
+	.thanks {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+		padding-block: 24px;
+	}
+	.thanks h2 {
+		font-size: 26px;
+	}
+	.thanks p {
+		color: var(--iv-text-muted);
+	}
+	.thanks .note {
+		font-size: 14px;
+		color: var(--iv-text-subtle);
+	}
+	.round {
+		border-radius: 999px;
+	}
+</style>

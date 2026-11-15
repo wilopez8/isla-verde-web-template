@@ -1,0 +1,130 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { proyectos, categorias, tagClass } from '../data/proyectos';
+
+const filtros = ['Todos', ...categorias];
+---
+
+<SiteLayout title="Proyectos">
+	<PageHero
+		eyebrow="Proyectos"
+		title="Espacios que ya están"
+		highlight="creciendo."
+		lede="Una selección de jardines, interiores y materas que hemos hecho."
+	>
+		<div class="filters" role="group" aria-label="Filtrar proyectos">
+			{
+				filtros.map((filtro, i) => (
+					<button type="button" data-filter={filtro} aria-pressed={i === 0 ? 'true' : 'false'}>
+						{filtro}
+					</button>
+				))
+			}
+		</div>
+	</PageHero>
+
+	<section class="bg-mint">
+		<div class="container gallery">
+			<div class="grid" style="--min: 300px">
+				{
+					proyectos.map((proyecto) => (
+						<article class="project" data-category={proyecto.category}>
+							<img src={proyecto.image} alt={proyecto.alt} loading="lazy" width="900" height="1600" />
+							<div class="project-body">
+								<span class={tagClass(proyecto.category)}>{proyecto.category}</span>
+								<h2>{proyecto.title}</h2>
+								<p>{proyecto.text}</p>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<CtaBand title="¿Te imaginas algo así en tu espacio?" text="Hablemos de tu proyecto." button="Empezar un proyecto" />
+</SiteLayout>
+
+<script>
+	// Category filter: hides the projects that don't match the selected button.
+	const buttons = document.querySelectorAll<HTMLButtonElement>('.filters button');
+	const projects = document.querySelectorAll<HTMLElement>('.project[data-category]');
+
+	buttons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const filter = button.dataset.filter;
+			buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+			projects.forEach((project) => {
+				project.hidden = filter !== 'Todos' && project.dataset.category !== filter;
+			});
+		});
+	});
+</script>
+
+<style>
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 40px;
+	}
+	.filters button {
+		min-height: 44px;
+		padding: 12px 20px;
+		border: 1.5px solid var(--iv-leaf);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--iv-white);
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 14px;
+		cursor: pointer;
+	}
+	.filters button:hover {
+		border-color: var(--iv-sand);
+	}
+	.filters button[aria-pressed='true'] {
+		border-color: var(--iv-sand);
+		background: var(--iv-sand);
+		color: var(--iv-forest-deep);
+	}
+
+	.gallery {
+		padding-block: 64px 104px;
+	}
+	.project {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border-radius: 16px;
+		background: var(--iv-white);
+	}
+	.project[hidden] {
+		display: none;
+	}
+	.project img {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 0;
+	}
+	.project-body {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 20px 22px 24px;
+	}
+	.project h2 {
+		margin: 0;
+		font-weight: 600;
+		font-size: 19px;
+		line-height: 1.3;
+	}
+	.project p {
+		font-size: 15px;
+		color: var(--iv-text-subtle);
+	}
+</style>

@@ -1,246 +1,250 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { servicios } from '../data/servicios';
+import { proyectos, tagClass } from '../data/proyectos';
 
-// Placeholder content: replace with the client's real text and images.
-// Images live in /public, so "/hero.jpg" means public/hero.jpg.
+// Page content: edit the text here.
 const hero = {
-	title: 'Welcome wilmar to Isla Verde',
-	subtitle: 'A short, inviting line that says what the business does and who it is for.',
-	cta: 'Get in touch',
-	image: '/blog-placeholder-about.jpg',
+	eyebrow: 'Paisajismo y plantas de interior',
+	title: 'Espacios verdes para',
+	highlight: 'vivir mejor.',
+	lede: 'Diseñamos jardines, terrazas y ambientes interiores con plantas para hogares y empresas. Naturales, frescos y fáciles de cuidar.',
+	image: '/images/proyectos/jardin_principal.jpg',
+	alt: 'Terraza junto a la piscina con palmas, plantas tropicales y piedra de río',
 };
 
-const services = [
-	{ title: 'Service one', text: 'One or two sentences describing this service and why it matters to customers.' },
-	{ title: 'Service two', text: 'One or two sentences describing this service and why it matters to customers.' },
-	{ title: 'Service three', text: 'One or two sentences describing this service and why it matters to customers.' },
+const pasos: { title: string; text: string; icon: IconName }[] = [
+	{ title: 'Visita', text: 'Conocemos el lugar, la luz y lo que esperas del espacio.', icon: 'pin' },
+	{ title: 'Diseño', text: 'Te proponemos plantas, materas y materiales para tu espacio.', icon: 'pen' },
+	{ title: 'Instalación', text: 'Plantamos y dejamos todo listo para disfrutar.', icon: 'sprout' },
+	{ title: 'Cuidado', text: 'Te explicamos cómo mantenerlo verde y sano.', icon: 'droplet' },
 ];
 
-const gallery = ['/blog-placeholder-1.jpg', '/blog-placeholder-2.jpg', '/blog-placeholder-3.jpg'];
+// Projects shown on the home page (titles from src/data/proyectos.ts).
+const destacados = ['Lobby con palmas', 'Jardín frontal', 'Materas escultóricas']
+	.map((title) => proyectos.find((p) => p.title === title))
+	.filter((p) => p !== undefined);
 
-const testimonial = {
-	quote: 'A short quote from a happy customer goes here. Real words build trust.',
-	author: 'Customer name',
-};
-
-const contact = {
-	phone: '(787) 555-0100',
-	email: 'hello@example.com',
-	address: 'Street address, Isla Verde, Carolina, PR',
-	hours: 'Mon–Sat, 9am–6pm',
-};
+// Look of each service card, in the same order as src/data/servicios.ts.
+const cardStyles = [
+	{ card: 'card-light', tile: 'tile-forest', border: 'var(--iv-forest)' },
+	{ card: 'card-deep', tile: 'tile-sand', border: 'var(--iv-sand)' },
+	{ card: 'card-light', tile: 'tile-leaf', border: 'var(--iv-leaf)' },
+];
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main class="home">
-			<section class="hero" style={`--hero-image: url(${hero.image})`}>
-				<div class="hero-content">
-					<h1>{hero.title}</h1>
-					<p>{hero.subtitle}</p>
-					<a class="button" href="#contact">{hero.cta}</a>
+<SiteLayout>
+	<section class="bg-deep">
+		<div class="container hero">
+			<div class="hero-text">
+				<span class="eyebrow with-line">{hero.eyebrow}</span>
+				<h1 class="title-xl">{hero.title} <span class="highlight">{hero.highlight}</span></h1>
+				<p class="lede text-on-dark">{hero.lede}</p>
+				<div class="btn-row">
+					<a class="btn btn-sand" href="/contacto">Solicita una visita</a>
+					<a class="btn btn-outline-light" href="/proyectos">Ver proyectos</a>
 				</div>
-			</section>
+			</div>
+			<img class="hero-image" src={hero.image} alt={hero.alt} width="1600" height="900" />
+		</div>
+	</section>
 
-			<section id="services" class="section">
-				<h2>What we offer</h2>
-				<div class="cards">
-					{
-						services.map((service) => (
-							<article class="card">
-								<h3>{service.title}</h3>
-								<p>{service.text}</p>
-							</article>
-						))
-					}
-				</div>
-			</section>
-
-			<section class="section about">
-				<img src={gallery[0]} alt="" />
+	<section class="bg-mint section">
+		<div class="container">
+			<div class="section-head">
 				<div>
-					<h2>About us</h2>
-					<p>
-						A few sentences about the business: its story, what makes it different, and why
-						customers choose it.
-					</p>
-					<a href="/about">Read more →</a>
+					<span class="eyebrow">Servicios</span>
+					<h2 class="title-lg">Lo que hacemos</h2>
 				</div>
-			</section>
+				<a class="text-link" href="/servicios">Ver todos los servicios →</a>
+			</div>
+			<div class="grid">
+				{
+					servicios.map((servicio, i) => (
+						<article class={`service-card ${cardStyles[i].card}`} style={`--top: ${cardStyles[i].border}`}>
+							<span class={`icon-tile ${cardStyles[i].tile}`}>
+								<Icon name={servicio.icon} size={28} />
+							</span>
+							<h3>{servicio.title}</h3>
+							<p>{servicio.short}</p>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
 
-			<section class="section">
-				<h2>Gallery</h2>
-				<div class="gallery">
-					{gallery.map((src) => <img src={src} alt="" loading="lazy" />)}
-				</div>
-			</section>
-
-			<section class="section testimonial">
-				<blockquote>“{testimonial.quote}”</blockquote>
-				<p class="author">— {testimonial.author}</p>
-			</section>
-
-			<section id="contact" class="section contact">
+	<section class="bg-dark section">
+		<div class="container">
+			<div class="section-head">
 				<div>
-					<h2>Contact</h2>
-					<ul class="contact-list">
-						<li><strong>Phone:</strong> <a href={`tel:${contact.phone}`}>{contact.phone}</a></li>
-						<li><strong>Email:</strong> <a href={`mailto:${contact.email}`}>{contact.email}</a></li>
-						<li><strong>Address:</strong> {contact.address}</li>
-						<li><strong>Hours:</strong> {contact.hours}</li>
-					</ul>
+					<span class="eyebrow">Cómo trabajamos</span>
+					<h2 class="title-lg">De la primera visita a un espacio que crece contigo</h2>
 				</div>
-				<!-- Prototype only: this form isn't connected to anything yet. -->
-				<form class="contact-form" onsubmit="event.preventDefault(); alert('Prototype: the form is not connected yet.');">
-					<label>Name <input name="name" required /></label>
-					<label>Email <input name="email" type="email" required /></label>
-					<label>Message <textarea name="message" rows="4" required></textarea></label>
-					<button class="button" type="submit">Send message</button>
-				</form>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+			</div>
+			<ol class="grid steps" style="--min: 240px">
+				{
+					pasos.map((paso, i) => (
+						<li>
+							<span class="step-top">
+								<Icon name={paso.icon} size={28} />
+								<span class="step-number">{String(i + 1).padStart(2, '0')}</span>
+							</span>
+							<h3>{paso.title}</h3>
+							<p class="text-on-dark">{paso.text}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">Proyectos</span>
+					<h2 class="title-lg">Trabajos recientes</h2>
+				</div>
+				<a class="text-link" href="/proyectos">Ver todos los proyectos →</a>
+			</div>
+			<div class="grid" style="--min: 300px">
+				{
+					destacados.map((proyecto) => (
+						<figure class="project on-dark">
+							<img src={proyecto.image} alt={proyecto.alt} loading="lazy" width="900" height="1600" />
+							<figcaption>
+								{proyecto.title}
+								<span class={tagClass(proyecto.category)}>{proyecto.category}</span>
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<CtaBand
+		title="¿Tienes un espacio que quieres transformar?"
+		text="Cuéntanos tu idea y coordinamos una visita."
+		button="Escríbenos"
+	/>
+</SiteLayout>
 
 <style>
-	main.home {
-		width: 1100px;
-		padding-top: 1.5em;
-	}
 	.hero {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		min-height: 60vh;
-		padding: 2em;
-		border-radius: 16px;
-		background:
-			linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-			var(--hero-image) center / cover no-repeat;
-		color: white;
+		gap: 48px 72px;
+		padding-block: clamp(64px, 8vw, 88px) clamp(64px, 8vw, 96px);
 	}
-	.hero-content {
-		max-width: 620px;
+	.hero-text {
+		flex: 1 1 460px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
 	}
-	.hero h1 {
-		color: white;
+	.hero-text .lede {
+		max-width: 520px;
 	}
-	.hero p {
-		font-size: 1.2em;
-	}
-	.button {
-		display: inline-block;
-		padding: 0.6em 1.4em;
-		border: none;
-		border-radius: 999px;
-		background: var(--accent);
-		color: white;
-		font: inherit;
-		text-decoration: none;
-		cursor: pointer;
-	}
-	.button:hover {
-		background: var(--accent-dark);
-		color: white;
-	}
-	.section {
-		padding: 3em 0;
-	}
-	.section > h2 {
-		text-align: center;
-		margin-bottom: 1em;
-	}
-	.cards {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-		gap: 1.5em;
-	}
-	.card {
-		padding: 1.5em;
-		border-radius: 12px;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 8%);
-	}
-	.card p {
-		margin: 0;
-	}
-	.about {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 2em;
-		align-items: center;
-	}
-	.gallery {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-		gap: 1em;
-	}
-	.gallery img {
+	.hero-image {
+		flex: 1 1 480px;
+		min-width: 0;
 		width: 100%;
-		aspect-ratio: 4 / 3;
+		height: clamp(320px, 40vw, 540px);
 		object-fit: cover;
-	}
-	.testimonial {
-		text-align: center;
-		max-width: 720px;
-		margin: auto;
-	}
-	.testimonial blockquote {
-		border: none;
-		padding: 0;
-	}
-	.author {
-		color: rgb(var(--gray));
-	}
-	.contact {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 2em;
-	}
-	.contact-list {
-		list-style: none;
-		padding: 0;
-	}
-	.contact-form {
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-	}
-	.contact-form label {
-		display: flex;
-		flex-direction: column;
-	}
-	.contact-form input,
-	.contact-form textarea {
-		padding: 0.5em;
-		border: 1px solid rgb(var(--gray-light));
-		border-radius: 8px;
-		font-family: inherit;
+		border: 6px solid var(--iv-forest);
 		box-sizing: border-box;
+	}
+
+	.service-card {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: 32px;
+		border-radius: 16px;
+		border-top: 6px solid var(--top);
+	}
+	.service-card h3 {
+		margin: 4px 0 0;
+		font-weight: 600;
+		font-size: 22px;
+		line-height: 1.3;
+	}
+	.card-light {
+		background: var(--iv-white);
+	}
+	.card-light p {
+		color: var(--iv-text-muted);
+	}
+	.card-deep {
+		background: var(--iv-forest-deep);
+	}
+	.card-deep h3 {
+		color: var(--iv-white);
+	}
+	.card-deep p {
+		color: var(--iv-text-on-dark);
+	}
+
+	.steps {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		gap: 20px;
+	}
+	.steps li {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 28px;
+		border-radius: 16px;
+		background: var(--iv-forest-deep);
+	}
+	.step-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		color: var(--iv-leaf);
+	}
+	.step-number {
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 28px;
+		color: var(--iv-sand);
+	}
+	.steps h3 {
+		margin: 0;
+		font-weight: 600;
+		font-size: 20px;
+	}
+
+	.project {
+		margin: 0;
+		overflow: hidden;
+		border-radius: 16px;
+		background: var(--iv-forest-deep);
+	}
+	.project img {
 		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 4.4;
+		object-fit: cover;
+		border-radius: 0;
 	}
-	.contact-form .button {
-		align-self: flex-start;
-	}
-	@media (max-width: 720px) {
-		.about,
-		.contact {
-			grid-template-columns: 1fr;
-		}
-		.hero {
-			min-height: 50vh;
-			padding: 1.5em;
-		}
-		.hero h1 {
-			font-size: 2.2em;
-		}
+	.project figcaption {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		padding: 18px 22px 22px;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 17px;
+		color: var(--iv-white);
 	}
 </style>

@@ -5,13 +5,60 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.
+	<div class="container inner">
+		<!-- The brand manual asks for the logo on a light background, so it sits on a white plate. -->
+		<a href="/" class="logo" aria-label={`${SITE_TITLE}, inicio`}>
+			<img src="/images/logo-isla-verde.png" alt={SITE_TITLE} width="490" height="462" />
+		</a>
+		<nav aria-label="Pie de página">
+			<a href="/servicios">Servicios</a>
+			<a href="/proyectos">Proyectos</a>
+			<a href="/nosotros">Nosotros</a>
+			<a href="/contacto">Contacto</a>
+		</nav>
+		<span>&copy; {today.getFullYear()} {SITE_TITLE}</span>
+	</div>
 </footer>
+
 <style>
 	footer {
-		padding: 2em 1em 4em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
+		background: var(--iv-forest-deep);
+		color: var(--iv-text-on-dark);
+		font-size: 14px;
+	}
+	.inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px 40px;
+		padding-block: 56px;
+	}
+	.logo {
+		display: block;
+		background: var(--iv-white);
+		border-radius: 12px;
+		padding: 10px 16px;
+	}
+	.logo img {
+		display: block;
+		height: 52px;
+		width: auto;
+		border-radius: 0;
+	}
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 24px;
+		font-family: var(--font-heading);
+		font-weight: 600;
+	}
+	nav a {
+		color: var(--iv-white);
+		text-decoration: none;
+		padding: 10px 0;
+	}
+	nav a:hover {
+		color: var(--iv-sand);
 	}
 </style>

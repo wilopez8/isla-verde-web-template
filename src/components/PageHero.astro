@@ -1,0 +1,45 @@
+---
+// Dark title band at the top of the inner pages.
+// Pass the green-highlighted end of the title as `highlight`.
+interface Props {
+	eyebrow: string;
+	title: string;
+	highlight?: string;
+	lede: string;
+}
+
+const { eyebrow, title, highlight, lede } = Astro.props;
+---
+
+<section class="bg-deep">
+	<div class="container hero">
+		<span class="eyebrow with-line">{eyebrow}</span>
+		<div class="row">
+			<h1 class="title-xl">
+				{title}
+				{highlight && <span class="highlight">{highlight}</span>}
+			</h1>
+			<p class="lede text-on-dark">{lede}</p>
+		</div>
+		<slot />
+	</div>
+</section>
+
+<style>
+	.hero {
+		padding-block: clamp(64px, 8vw, 88px) clamp(56px, 7vw, 72px);
+	}
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		gap: 24px 64px;
+		margin-top: 24px;
+	}
+	h1 {
+		flex: 999 1 560px;
+	}
+	.row p {
+		flex: 1 1 320px;
+	}
+</style>

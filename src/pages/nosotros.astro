@@ -1,0 +1,206 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+
+// Page content: replace the [BRACKETED] text with the client's real information.
+const historia =
+	'[Cuenta aquí la historia de Isla Verde: quién la fundó, desde cuándo trabajan, dónde y qué los hace diferentes. Dos o tres frases cálidas y sencillas.]';
+
+// Values from the brand manual's "Personalidad" section.
+const valores: { title: string; text: string; icon: IconName; card: string; tile: string }[] = [
+	{ title: 'Natural y fresca', text: 'Buscamos bienestar y conexión con el entorno en cada espacio.', icon: 'leaf', card: 'card-forest', tile: 'tile-white' },
+	{ title: 'Cercana', text: 'Hablamos claro, escuchamos y te acompañamos en todo el proceso.', icon: 'heart', card: 'card-sand', tile: 'tile-deep' },
+	{ title: 'Confiable', text: 'Orden, cumplimiento y trabajo bien hecho de principio a fin.', icon: 'shield', card: 'card-deep', tile: 'tile-leaf' },
+	{ title: 'Contemporánea', text: 'Diseños limpios que combinan con la arquitectura de hoy.', icon: 'sparkle', card: 'card-white', tile: 'tile-lime' },
+];
+
+const testimonio = {
+	quote: '[Una frase corta de un cliente real sobre su jardín o espacio.]',
+	author: '[NOMBRE DEL CLIENTE]',
+	city: '[CIUDAD]',
+};
+---
+
+<SiteLayout title="Nosotros">
+	<section class="bg-deep">
+		<div class="container intro">
+			<div class="intro-text">
+				<span class="eyebrow with-line">Nosotros</span>
+				<h1 class="title-xl">La naturaleza, <span class="highlight">más cerca de ti.</span></h1>
+				<p class="lede intro-lede">Isla Verde nace de una idea sencilla: los espacios con plantas se sienten mejor.</p>
+				<p class="text-on-dark">{historia}</p>
+			</div>
+			<img
+				class="intro-image"
+				src="/images/proyectos/palmas-altas.jpg"
+				alt="Palmas altas contra el cielo junto a una fachada blanca"
+				width="900"
+				height="1600"
+			/>
+		</div>
+	</section>
+
+	<section class="bg-mint section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">Lo que nos define</span>
+					<h2 class="title-lg">Nuestra forma de trabajar</h2>
+				</div>
+			</div>
+			<div class="grid" style="--min: 250px">
+				{
+					valores.map((valor) => (
+						<div class={`valor ${valor.card}`}>
+							<span class={`icon-tile ${valor.tile}`}>
+								<Icon name={valor.icon} size={28} />
+							</span>
+							<h3>{valor.title}</h3>
+							<p>{valor.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-forest">
+		<div class="container quote-row section">
+			<img
+				src="/images/proyectos/jardin-palmas.jpg"
+				alt="Jardín de palmas con arbustos tropicales junto a un muro blanco"
+				loading="lazy"
+				width="900"
+				height="1600"
+			/>
+			<figure>
+				<Icon name="quote" size={48} strokeWidth={1.4} class="quote-icon" />
+				<blockquote>{testimonio.quote}</blockquote>
+				<figcaption><strong>{testimonio.author}</strong> · {testimonio.city}</figcaption>
+			</figure>
+		</div>
+	</section>
+
+	<CtaBand title="Nos encantaría conocer tu espacio." text="Escríbenos y coordinamos una visita." button="Contáctanos" />
+</SiteLayout>
+
+<style>
+	.intro {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 48px 72px;
+		padding-block: clamp(64px, 8vw, 88px) clamp(64px, 8vw, 96px);
+	}
+	.intro-text {
+		flex: 1 1 460px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+	.intro-lede {
+		color: var(--iv-white);
+	}
+	.intro-image {
+		flex: 1 1 420px;
+		min-width: 0;
+		width: 100%;
+		max-width: 520px;
+		height: auto;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		border: 6px solid var(--iv-forest);
+		box-sizing: border-box;
+	}
+
+	.valor {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		padding: 32px;
+		border-radius: 16px;
+	}
+	.valor h3 {
+		margin: 0;
+		font-weight: 600;
+		font-size: 20px;
+	}
+	.valor p {
+		font-size: 16px;
+	}
+	.card-forest {
+		background: var(--iv-forest);
+	}
+	.card-forest h3,
+	.card-forest p {
+		color: var(--iv-white);
+	}
+	.card-sand {
+		background: var(--iv-sand);
+	}
+	.card-sand h3,
+	.card-sand p {
+		color: var(--iv-forest-deep);
+	}
+	.card-deep {
+		background: var(--iv-forest-deep);
+	}
+	.card-deep h3 {
+		color: var(--iv-white);
+	}
+	.card-deep p {
+		color: var(--iv-text-on-dark);
+	}
+	.card-white {
+		background: var(--iv-white);
+	}
+	.card-white p {
+		color: var(--iv-text-muted);
+	}
+
+	.quote-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 48px 72px;
+	}
+	.quote-row img {
+		flex: 1 1 360px;
+		min-width: 0;
+		width: 100%;
+		max-width: 460px;
+		height: auto;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+	}
+	.quote-row figure {
+		flex: 1 1 440px;
+		min-width: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+	.quote-row :global(.quote-icon) {
+		color: var(--iv-sand);
+	}
+	blockquote {
+		margin: 0;
+		padding: 0;
+		border: none;
+		font-family: var(--font-heading);
+		font-weight: 500;
+		font-size: clamp(22px, 2.4vw, 30px);
+		line-height: 1.4;
+		color: var(--iv-white);
+	}
+	figcaption {
+		font-size: 15px;
+		color: var(--iv-white);
+	}
+	figcaption strong {
+		color: var(--iv-sand);
+	}
+</style>

@@ -1,0 +1,200 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import { servicios } from '../data/servicios';
+
+// Look of each service block, in the same order as src/data/servicios.ts.
+const rowStyles = [
+	{ row: 'row-mint', tile: 'tile-forest' },
+	{ row: 'row-deep', tile: 'tile-sand' },
+	{ row: 'row-sand', tile: 'tile-deep' },
+];
+
+const criterios: { title: string; text: string; icon: IconName; tile: string }[] = [
+	{ title: 'Luz y ubicación', text: 'Cada planta va donde puede crecer bien.', icon: 'sun', tile: 'tile-sand' },
+	{ title: 'Riego', text: 'Plantas pensadas para el agua que van a recibir.', icon: 'droplet', tile: 'tile-leaf' },
+	{ title: 'Mantenimiento', text: 'Espacios fáciles de cuidar en el día a día.', icon: 'scissors', tile: 'tile-deep' },
+	{ title: 'Materiales', text: 'Piedras, materas y bordes que combinan con tu espacio.', icon: 'leaf', tile: 'tile-lime' },
+];
+---
+
+<SiteLayout title="Servicios">
+	<PageHero
+		eyebrow="Servicios"
+		title="Diseño, instalación y"
+		highlight="cuidado de plantas."
+		lede="Cada proyecto empieza por entender el lugar: la luz, el clima y cómo lo usas."
+	/>
+
+	<section class="section">
+		<div class="container services">
+			{
+				servicios.map((servicio, i) => (
+					<article class={`service ${rowStyles[i].row} ${i % 2 === 1 ? 'reverse' : ''}`}>
+						<img src={servicio.image} alt={servicio.alt} loading="lazy" width="900" height="1600" />
+						<div class="service-body">
+							<span class={`icon-tile ${rowStyles[i].tile}`}>
+								<Icon name={servicio.icon} size={28} />
+							</span>
+							<h2>{servicio.title}</h2>
+							<p class="service-text">{servicio.text}</p>
+							<ul>
+								{servicio.items.map((item) => (
+									<li>
+										<Icon name="check" size={20} strokeWidth={2.2} class="check" />
+										<span>{item}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="bg-forest section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">En cada proyecto</span>
+					<h2 class="title-lg">Lo que tenemos en cuenta</h2>
+				</div>
+			</div>
+			<div class="grid" style="--min: 240px">
+				{
+					criterios.map((c) => (
+						<div class="criterio">
+							<span class={`icon-tile small ${c.tile}`}>
+								<Icon name={c.icon} size={24} strokeWidth={1.7} />
+							</span>
+							<h3>{c.title}</h3>
+							<p>{c.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<CtaBand
+		title="¿No sabes qué servicio necesitas?"
+		text="Cuéntanos sobre tu espacio y te orientamos."
+		button="Solicita una visita"
+	/>
+</SiteLayout>
+
+<style>
+	.services {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+	.service {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		overflow: hidden;
+		border-radius: 20px;
+	}
+	.service.reverse {
+		flex-direction: row-reverse;
+	}
+	.service img {
+		flex: 1 1 380px;
+		min-width: 0;
+		width: 100%;
+		min-height: 320px;
+		max-height: 460px;
+		object-fit: cover;
+		border-radius: 0;
+	}
+	.service-body {
+		flex: 1 1 440px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 18px;
+		padding: clamp(28px, 4vw, 56px);
+	}
+	.service h2 {
+		margin: 0;
+		font-weight: 600;
+		font-size: clamp(26px, 2.6vw, 32px);
+	}
+	.service ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.service li {
+		display: flex;
+		gap: 12px;
+		align-items: flex-start;
+	}
+	.service :global(.check) {
+		flex: none;
+		margin-top: 4px;
+	}
+
+	.row-mint {
+		background: var(--iv-mint);
+	}
+	.row-mint .service-text {
+		color: var(--iv-text-muted);
+	}
+	.row-mint :global(.check) {
+		color: var(--iv-forest);
+	}
+	.row-deep {
+		background: var(--iv-forest-deep);
+		color: var(--iv-white);
+	}
+	.row-deep h2 {
+		color: var(--iv-white);
+	}
+	.row-deep .service-text {
+		color: var(--iv-text-on-dark);
+	}
+	.row-deep :global(.check) {
+		color: var(--iv-leaf);
+	}
+	.row-sand {
+		background: var(--iv-sand);
+		color: var(--iv-forest-deep);
+	}
+	.row-sand :global(.check) {
+		color: var(--iv-forest-deep);
+	}
+
+	.criterio {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		padding: 28px;
+		border-radius: 16px;
+		background: var(--iv-white);
+	}
+	.criterio h3 {
+		margin: 0;
+		font-weight: 600;
+		font-size: 19px;
+		color: var(--iv-forest-deep);
+	}
+	.criterio p {
+		font-size: 16px;
+		color: var(--iv-text-muted);
+	}
+
+	@media (max-width: 860px) {
+		.service.reverse {
+			flex-direction: row;
+		}
+	}
+</style>

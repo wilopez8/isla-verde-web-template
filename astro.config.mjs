@@ -9,6 +9,10 @@ import cloudflare from "@astrojs/cloudflare";
 export default defineConfig({
 	site: "https://example.com",
 	integrations: [mdx(), sitemap()],
+	// The old starter "About" page was replaced by the Spanish "Nosotros" page.
+	redirects: {
+		"/about": "/nosotros",
+	},
 	adapter: cloudflare({
 		platformProxy: {
 			enabled: true,

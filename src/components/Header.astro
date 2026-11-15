@@ -1,79 +1,107 @@
 ---
-import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
+
+const links = [
+	{ href: '/', label: 'Inicio' },
+	{ href: '/servicios', label: 'Servicios' },
+	{ href: '/proyectos', label: 'Proyectos' },
+	{ href: '/nosotros', label: 'Nosotros' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
 
 <header>
-	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<a href="/#services">Services</a>
-			<HeaderLink href="/about">About</HeaderLink>
-			<a href="/#contact" class="nav-cta">Contact</a>
-		</div>
-	</nav>
+	<div class="container bar">
+		<a href="/" class="logo" aria-label={`${SITE_TITLE}, inicio`}>
+			<img src="/images/logo-isla-verde.png" alt={SITE_TITLE} width="490" height="462" />
+		</a>
+		<nav aria-label="Principal">
+			{
+				links.map((link) => (
+					<a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+						{link.label}
+					</a>
+				))
+			}
+			<a href="/contacto" class="nav-cta" aria-current={isCurrent('/contacto') ? 'page' : undefined}>
+				Contacto
+			</a>
+		</nav>
+	</div>
 </header>
+
 <style>
 	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-		position: sticky;
-		top: 0;
-		z-index: 10;
+		background: var(--iv-white);
+		border-bottom: 4px solid var(--iv-leaf);
 	}
-	h2 {
-		margin: 0;
-		font-size: 1.1em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
-	nav {
-		max-width: 1100px;
-		margin: auto;
+	.bar {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
+		gap: 12px 32px;
+		padding-block: 12px;
+	}
+	.logo {
+		display: block;
+		padding: 4px 0;
+	}
+	.logo img {
+		display: block;
+		height: 68px;
+		width: auto;
+		border-radius: 0;
+	}
+	nav {
+		display: flex;
 		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 28px;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 14px;
 	}
 	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+		color: var(--iv-forest-deep);
 		text-decoration: none;
+		padding: 12px 0;
+		border-bottom: 3px solid transparent;
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+	nav a:hover {
+		color: var(--iv-forest);
 	}
-	.internal-links {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
+	nav a[aria-current='page'] {
+		color: var(--iv-forest);
+		border-bottom-color: var(--iv-forest);
 	}
 	nav a.nav-cta {
-		margin-left: 0.5em;
-		padding: 0.4em 1em;
+		padding: 12px 22px;
 		border: none;
-		border-radius: 999px;
-		background: var(--accent);
-		color: white;
+		border-radius: 8px;
+		background: var(--iv-forest-deep);
+		color: var(--iv-white);
 	}
 	nav a.nav-cta:hover {
-		background: var(--accent-dark);
-		color: white;
+		background: var(--iv-forest-dark);
+		color: var(--iv-white);
+	}
+	nav a.nav-cta[aria-current='page'] {
+		background: var(--iv-sand);
+		color: var(--iv-forest-deep);
 	}
 	@media (max-width: 720px) {
-		nav {
+		.bar {
 			justify-content: center;
 		}
-		nav a {
-			padding: 0.6em 0.4em;
+		.logo img {
+			height: 56px;
+		}
+		nav {
+			justify-content: center;
+			gap: 4px 20px;
 		}
 	}
 </style>
